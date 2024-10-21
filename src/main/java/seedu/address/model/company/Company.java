@@ -2,12 +2,23 @@ package seedu.address.model.company;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.common.Address;
 import seedu.address.model.common.Name;
+import seedu.address.model.job.Job;
+import seedu.address.model.job.JobCompany;
+import seedu.address.model.job.JobDescription;
+import seedu.address.model.job.JobSalary;
+import seedu.address.model.job.UniqueJobList;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Role;
 
 /**
  * Represents a company in the address book.
@@ -17,6 +28,7 @@ public class Company {
     private final Address address;
     private final BillingDate billingDate;
     private final Phone phone;
+    private final UniqueJobList jobs = new UniqueJobList();
 
     /**
      * Every field must be present and not null.
@@ -27,6 +39,17 @@ public class Company {
         this.address = address;
         this.billingDate = billingDate;
         this.phone = phone;
+    }
+
+    public Company(Name name, Address address, BillingDate billingDate, Phone phone, List<Job> jobs) {
+        requireAllNonNull(name, address, billingDate, phone);
+        this.name = name;
+        this.address = address;
+        this.billingDate = billingDate;
+        this.phone = phone;
+        for (Job job : jobs) {
+            this.jobs.add(job);
+        }
     }
 
     public Name getName() {
@@ -43,6 +66,10 @@ public class Company {
 
     public Phone getPhone() {
         return this.phone;
+    }
+
+    public FilteredList<Job> getJobs() {
+        return new FilteredList<Job>(this.jobs.asUnmodifiableObservableList());
     }
 
     /**

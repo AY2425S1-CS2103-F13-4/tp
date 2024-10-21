@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.commons.exceptions.NotImplementedException;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.common.Name;
+import seedu.address.model.job.Job;
 import seedu.address.model.skill.Skill;
 
 /**
@@ -26,6 +28,8 @@ public class Person {
     private final Role role;
     private final Set<Skill> skills = new HashSet<>();
 
+    private final Job match;
+
     /**
      * Every field must be present and not null.
      */
@@ -36,6 +40,17 @@ public class Person {
         this.email = email;
         this.role = role;
         this.skills.addAll(skills);
+        this.match = null;
+    }
+
+    public Person(Name name, Phone phone, Email email, Role role, Set<Skill> skills, Job match) {
+        requireAllNonNull(name, phone, email, role, skills);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        this.skills.addAll(skills);
+        this.match = match;
     }
 
     public Name getName() {
@@ -60,6 +75,10 @@ public class Person {
      */
     public Set<Skill> getSkills() {
         return Collections.unmodifiableSet(skills);
+    }
+
+    public Job getMatch() {
+        return match;
     }
 
     /**

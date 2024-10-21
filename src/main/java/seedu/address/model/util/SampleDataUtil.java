@@ -1,9 +1,14 @@
 package seedu.address.model.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javafx.collections.transformation.FilteredList;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.common.Address;
@@ -65,31 +70,51 @@ public class SampleDataUtil {
         )};
     }
 
-    public static Job[] getSampleJobs() {
-        return new Job[]{new Job(
+    public static Job[] getSampleJobs(AddressBook sampleAb) {
+
+        List<Company> companies = new ArrayList<>(sampleAb.getCompanyList());
+
+        // Need two sample companies
+        assert companies.size() >= 2;
+
+        Company company0 = companies.get(0);
+        Company company1 = companies.get(1);
+
+        Job job0 = new Job(
                 new Name("Software Engineer, Google Pay, Core"),
-                new JobCompany("Google"),
+                new JobCompany(company0.getName().fullName, sampleAb),
                 new JobSalary("100"),
                 new JobDescription(
                         "As a software engineer, you will work on a specific project critical to Google’s needs with "
-                        + "opportunities to switch teams and projects as you and our fast-paced business grow and "
-                        + "evolve. "),
+                                + "opportunities to switch teams and projects as you and our fast-paced business grow and "
+                                + "evolve. "),
                 getRequirements("Go", "Kubernetes", "Docker", "5YOE")
-        ), new Job(
+        );
+
+        Job job1 = new Job(
                 new Name("Software Engineering Manager II, YouTube"),
-                new JobCompany("YouTube"),
+                new JobCompany(company1.getName().fullName, sampleAb),
                 new JobSalary("200"),
                 new JobDescription(
                         "As a Software Engineering Manager you manage your project goals, contribute to product "
-                        + "strategy and help develop your team. "),
+                                + "strategy and help develop your team. "),
                 getRequirements("Leadership", "AGILE", "SDLC", "CICD")
-        ), new Job(
-                new Name("Test Job"),
-                new JobCompany("Test Company"),
-                new JobSalary("300"),
-                new JobDescription(null),
-                getRequirements("TestRequirements")
-        )};
+        );
+
+
+        companies.set(0, createCompanyWithJobs(company0, List.of(job0)));
+        companies.set(1, createCompanyWithJobs(company1, List.of(job1)));
+        sampleAb.setCompanies(companies);
+
+        return new Job[]{ job0, job1 };
+
+//        return Arrays.stream(getSampleCompanies())
+//              .map(Company::getJobs)
+//              .flatMap(Collection::stream)
+//              .toList()
+//              .toArray(new Job[]{});
+
+//        return new Job[]{};
     }
 
     public static Company[] getSampleCompanies() {
@@ -114,16 +139,29 @@ public class SampleDataUtil {
 
     public static ReadOnlyAddressBook getSampleAddressBook() {
         AddressBook sampleAb = new AddressBook();
-        for (Person samplePerson : getSamplePersons()) {
-            sampleAb.addPerson(samplePerson);
-        }
-        for (Job sampleJob : getSampleJobs()) {
-            sampleAb.addJob(sampleJob);
-        }
+        // Due to the dependency between the entities, companies should be created
+        // before jobs, then contacts
         for (Company sampleCompany : getSampleCompanies()) {
             sampleAb.addCompany(sampleCompany);
         }
+
+        for (Job sampleJob : getSampleJobs(sampleAb)) {
+            sampleAb.addJob(sampleJob);
+        }
+
+        for (Person samplePerson : getSamplePersons()) {
+            sampleAb.addPerson(samplePerson);
+        }
+
         return sampleAb;
+    }
+
+    private static Company createCompanyWithJobs(Company company, List<Job> jobs) {
+        Name newName = company.getName();
+        Address newAddress = company.getAddress();
+        BillingDate newBillingDate = company.getBillingDate();
+        Phone newPhone = company.getPhone();
+        return new Company(newName, newAddress, newBillingDate, newPhone, jobs);
     }
 
     /**

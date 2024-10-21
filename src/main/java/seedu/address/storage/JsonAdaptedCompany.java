@@ -1,5 +1,9 @@
 package seedu.address.storage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,6 +12,7 @@ import seedu.address.model.common.Address;
 import seedu.address.model.common.Name;
 import seedu.address.model.company.BillingDate;
 import seedu.address.model.company.Company;
+import seedu.address.model.job.Job;
 import seedu.address.model.person.Phone;
 
 /**
@@ -19,6 +24,7 @@ public class JsonAdaptedCompany {
     private final String address;
     private final String billingDate;
     private final String phone;
+    private final List<JsonAdaptedJob> jobs = new ArrayList<>();
 
     /**
      * Constructs a json adapted company with the company details.
@@ -30,13 +36,15 @@ public class JsonAdaptedCompany {
      */
     @JsonCreator
     public JsonAdaptedCompany(@JsonProperty("name") String name,
-                              @JsonProperty("address") String address,
-                              @JsonProperty("billing date") String billingDate,
-                              @JsonProperty("phone") String phone) {
+                              @JsonProperty("address") String address, @JsonProperty("billing date") String billingDate,
+            @JsonProperty("phone") String phone, @JsonProperty("jobs") List<JsonAdaptedJob> jobs) {
         this.name = name;
         this.address = address;
         this.billingDate = billingDate;
         this.phone = phone;
+        if (jobs != null) {
+            this.jobs.addAll(jobs);
+        }
     }
 
     /**
@@ -48,6 +56,7 @@ public class JsonAdaptedCompany {
         address = source.getAddress().value;
         billingDate = source.getBillingDate().date;
         phone = source.getPhone().value;
+        jobs.addAll(source.getJobs().stream().map(JsonAdaptedJob::new).collect(Collectors.toList()));
     }
 
     /**
@@ -96,6 +105,12 @@ public class JsonAdaptedCompany {
         }
         final Phone modelPhone = new Phone(phone);
 
-        return new Company(modelName, modelAddress, modelBillingDate, modelPhone);
+        // TODO: data validation for job
+        final List<Job> modelJobs = new ArrayList<>();
+        for(JsonAdaptedJob job : jobs) {
+            modelJobs.add(job.toModelType());
+        }
+
+        return new Company(modelName, modelAddress, modelBillingDate, modelPhone, modelJobs);
     }
 }

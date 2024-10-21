@@ -15,6 +15,8 @@ import seedu.address.model.job.Job;
 import seedu.address.model.job.JobCompany;
 import seedu.address.model.job.JobDescription;
 import seedu.address.model.job.JobSalary;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -29,6 +31,7 @@ class JsonAdaptedJob {
     private final String salary;
     private final String description;
     private final List<JsonAdaptedTag> requirements = new ArrayList<>();
+    private final List<JsonAdaptedPerson> matches = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedJob} with the given job details.
@@ -36,13 +39,17 @@ class JsonAdaptedJob {
     @JsonCreator
     public JsonAdaptedJob(@JsonProperty("name") String name, @JsonProperty("company") String company,
             @JsonProperty("salary") String salary, @JsonProperty("description") String description,
-            @JsonProperty("requirements") List<JsonAdaptedTag> requirements) {
+            @JsonProperty("requirements") List<JsonAdaptedTag> requirements,
+            @JsonProperty("persons") List<JsonAdaptedPerson> matches) {
         this.name = name;
         this.company = company;
         this.salary = salary;
         this.description = description;
         if (requirements != null) {
             this.requirements.addAll(requirements);
+        }
+        if (matches != null) {
+            this.matches.addAll(matches);
         }
     }
 
@@ -51,12 +58,13 @@ class JsonAdaptedJob {
      */
     public JsonAdaptedJob(Job source) {
         name = source.getName().fullName;
-        company = source.getCompany().value;
+        company = source.getCompany().toString();
         salary = String.valueOf(source.getSalary().value);
         description = source.getDescription().value;
         requirements.addAll(source.getRequirements().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
+        matches.addAll(source.getMatches().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
     }
 
     /**
@@ -79,7 +87,12 @@ class JsonAdaptedJob {
 
         Set<Tag> modelJobRequirements = new HashSet<>(jobRequirements);
 
-        return new Job(modelName, modelJobCompany, modelJobSalary, modelJobDescription, modelJobRequirements);
+        List<Person> modelMatches = new ArrayList<>();
+        for(JsonAdaptedPerson match : matches) {
+            modelMatches.add(match.toModelType());
+        }
+
+        return new Job(modelName, modelJobCompany, modelJobSalary, modelJobDescription, modelJobRequirements, modelMatches);
     }
 
 }

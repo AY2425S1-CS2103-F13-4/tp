@@ -125,6 +125,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code company} is invalid.
      */
     public static JobCompany parseCompany(String company) throws ParseException {
+        // TODO: Discuss if this method is needed
         requireNonNull(company);
         String trimmedCompany = company.trim();
         if (!JobCompany.isValidCompany(trimmedCompany)) {

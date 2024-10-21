@@ -139,6 +139,24 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
+     * Replaces the given job in the list with an edited one.
+     *
+     * @param target Job to be replaced.
+     * @param editedJob Job to replace the other.
+     */
+    public void setJob(Job target, Job editedJob) {
+        requireNonNull(editedJob);
+        //        UniquePersonList matches = new UniquePersonList();
+        //        for (Person match : editedJob.getMatches()) {
+        //            Person editedPerson = new Person();
+        //            setPerson(match, );
+        //
+        //        }
+
+        jobs.setJob(target, editedJob);
+    }
+
+    /**
      * Replaces the given company in the list with an edited one.
      *
      * @param target Company to be replaced.

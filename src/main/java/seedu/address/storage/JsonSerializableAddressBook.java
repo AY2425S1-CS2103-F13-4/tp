@@ -28,7 +28,7 @@ class JsonSerializableAddressBook {
     private final List<JsonAdaptedJob> jobs = new ArrayList<>();
     private final List<JsonAdaptedCompany> companies = new ArrayList<>();
     /**
-     * Constructs a {@code JsonSerializableAddressBook} with the given persons.
+     * Constructs a {@code JsonSerializableAddressBook} with the given data.
      */
     @JsonCreator
     public JsonSerializableAddressBook(
@@ -46,16 +46,10 @@ class JsonSerializableAddressBook {
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
-        persons.addAll(source
-                .getPersonList()
-                .stream()
-                .map(JsonAdaptedPerson::new)
-                .collect(Collectors.toList()));
-        jobs.addAll(source
-                .getJobList()
-                .stream()
-                .map(JsonAdaptedJob::new)
-                .collect(Collectors.toList()));
+//        persons.addAll(source
+//                .getPersonList().stream().filter(p -> p.getMatch() == null)
+//                .map(JsonAdaptedPerson::new)
+//                .collect(Collectors.toList()));
         companies.addAll(source
                 .getCompanyList()
                 .stream()
@@ -70,25 +64,33 @@ class JsonSerializableAddressBook {
      */
     public AddressBook toModelType() throws IllegalValueException {
         AddressBook addressBook = new AddressBook();
-        for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
-            Person person = jsonAdaptedPerson.toModelType();
-            if (addressBook.hasPerson(person)) {
-                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
-            }
-            addressBook.addPerson(person);
-        }
+//        for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
+//            Person person = jsonAdaptedPerson.toModelType();
+//            if (addressBook.hasPerson(person)) {
+//                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
+//            }
+//            addressBook.addPerson(person);
+//        }
 
-        for (JsonAdaptedJob jsonAdaptedJob : jobs) {
-            Job job = jsonAdaptedJob.toModelType();
-            // TODO: Duplicate job invalidation
-            addressBook.addJob(job);
-        }
+//        for (JsonAdaptedJob jsonAdaptedJob : jobs) {
+//            Job job = jsonAdaptedJob.toModelType();
+//            // TODO: Duplicate job invalidation
+//            addressBook.addJob(job);
+//        }
 
         for (JsonAdaptedCompany jsonAdaptedCompany : companies) {
             Company company = jsonAdaptedCompany.toModelType();
             if (addressBook.hasCompany(company)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_COMPANY);
             }
+
+            for (Job job : company.getJobs()) {
+                for(Person match: job.getMatches()) {
+                    addressBook.addPerson(match);
+                }
+                addressBook.addJob(job);
+            }
+
             addressBook.addCompany(company);
         }
 

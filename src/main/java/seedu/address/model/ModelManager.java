@@ -167,6 +167,12 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
+    public void setJob(Job target, Job editedJob) {
+        requireAllNonNull(target, editedJob);
+
+        addressBook.setJob(target, editedJob);
+    }
+
     /**
      * Replaces the target company with an edited version of itself.
      *

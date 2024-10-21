@@ -1,11 +1,20 @@
 package seedu.address.model.job;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.common.Name;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.person.Role;
+import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -17,6 +26,7 @@ public class Job {
     private final JobSalary salary;
     private final JobDescription description;
     private final Set<Tag> requirements = new HashSet<>();
+    private final UniquePersonList matches = new UniquePersonList();
 
     /**
      * TODO: Implement data validation
@@ -30,6 +40,18 @@ public class Job {
         this.salary = salary;
         this.description = description;
         this.requirements.addAll(requirements);
+    }
+
+    public Job(Name name, JobCompany company, JobSalary salary, JobDescription description, Set<Tag> requirements,
+            List<Person> matches) {
+        this.name = name;
+        this.company = company;
+        this.salary = salary;
+        this.description = description;
+        this.requirements.addAll(requirements);
+        for (Person match : matches) {
+            this.matches.add(match);
+        }
     }
 
     public Name getName() {
@@ -54,6 +76,10 @@ public class Job {
      */
     public Set<Tag> getRequirements() {
         return Collections.unmodifiableSet(requirements);
+    }
+
+    public FilteredList<Person> getMatches() {
+        return new FilteredList<>(matches.asUnmodifiableObservableList());
     }
 
     /** Returns true if both jobs have the same name and company. */
