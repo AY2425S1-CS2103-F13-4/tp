@@ -68,8 +68,8 @@ public class Company {
         return this.phone;
     }
 
-    public FilteredList<Job> getJobs() {
-        return new FilteredList<Job>(this.jobs.asUnmodifiableObservableList());
+    public UniqueJobList getJobs() {
+        return jobs;
     }
 
     /**

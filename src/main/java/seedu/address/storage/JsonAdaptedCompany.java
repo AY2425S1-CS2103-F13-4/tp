@@ -56,7 +56,7 @@ public class JsonAdaptedCompany {
         address = source.getAddress().value;
         billingDate = source.getBillingDate().date;
         phone = source.getPhone().value;
-        jobs.addAll(source.getJobs().stream().map(JsonAdaptedJob::new).collect(Collectors.toList()));
+        jobs.addAll(source.getJobs().asUnmodifiableObservableList().stream().map(JsonAdaptedJob::new).collect(Collectors.toList()));
     }
 
     /**

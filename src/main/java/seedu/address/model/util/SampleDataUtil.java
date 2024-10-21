@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,26 +31,61 @@ import seedu.address.model.tag.Tag;
  * Contains utility methods for populating {@code AddressBook} with sample data.
  */
 public class SampleDataUtil {
-    public static Person[] getSamplePersons() {
-        return new Person[]{new Person(
+    public static Person[] getSamplePersons(AddressBook sampleAb) {
+
+        List<Job> jobs = new ArrayList<>(sampleAb.getJobList());
+
+        // Need at least two sample jobs
+        assert jobs.size() >= 2;
+
+        Job job0 = jobs.get(0);
+        Job job1 = jobs.get(1);
+
+        Person person0 = new Person(
                 new Name("Alex Yeoh"),
                 new Phone("87438807"),
                 new Email("alexyeoh@example.com"),
                 new Role("Software Engineer"),
-                getSkillSet("Python", "C")
-        ), new Person(
+                getSkillSet("Python", "C"),
+                job0
+        );
+        Person person1 = new Person(
                 new Name("Bernice Yu"),
                 new Phone("99272758"),
                 new Email("berniceyu@example.com"),
                 new Role("Copywriter"),
-                getSkillSet("wordpress", "MSword")
-        ), new Person(
+                getSkillSet("wordpress", "MSword"),
+                job0
+        );
+        Person person2 = new Person(
                 new Name("Charlotte Oliveiro"),
                 new Phone("93210283"),
                 new Email("charlotte@example.com"),
                 new Role("Teacher"),
-                getSkillSet("math")
-        ), new Person(
+                getSkillSet("math"),
+                job1
+        );
+
+        Job newJob0 = createJobWithMatches(job0, List.of(person0, person1));
+        Job newJob1 = createJobWithMatches(job1, List.of(person2));
+        jobs.set(0, newJob0);
+        jobs.set(1, newJob1);
+        sampleAb.setJobs(jobs);
+
+        // TODO: discuss solutions, unable to recreate two entity that reference each other
+        Company company0 = newJob0.getCompany().value;
+        Company company1 = newJob1.getCompany().value;
+        // TODO: LoD
+        company0.getJobs().setJobs(List.of(newJob0));
+        company1.getJobs().setJobs(List.of(newJob1));
+        sampleAb.setCompany(company0, company0);
+        sampleAb.setCompany(company1, company1);
+
+        return new Person[] {
+                person0,
+                person1,
+                person2,
+                new Person(
                 new Name("David Li"),
                 new Phone("91031282"),
                 new Email("lidavid@example.com"),
@@ -74,7 +110,7 @@ public class SampleDataUtil {
 
         List<Company> companies = new ArrayList<>(sampleAb.getCompanyList());
 
-        // Need two sample companies
+        // Need at least two sample companies
         assert companies.size() >= 2;
 
         Company company0 = companies.get(0);
@@ -107,14 +143,6 @@ public class SampleDataUtil {
         sampleAb.setCompanies(companies);
 
         return new Job[]{ job0, job1 };
-
-//        return Arrays.stream(getSampleCompanies())
-//              .map(Company::getJobs)
-//              .flatMap(Collection::stream)
-//              .toList()
-//              .toArray(new Job[]{});
-
-//        return new Job[]{};
     }
 
     public static Company[] getSampleCompanies() {
@@ -149,7 +177,7 @@ public class SampleDataUtil {
             sampleAb.addJob(sampleJob);
         }
 
-        for (Person samplePerson : getSamplePersons()) {
+        for (Person samplePerson : getSamplePersons(sampleAb)) {
             sampleAb.addPerson(samplePerson);
         }
 
@@ -162,6 +190,15 @@ public class SampleDataUtil {
         BillingDate newBillingDate = company.getBillingDate();
         Phone newPhone = company.getPhone();
         return new Company(newName, newAddress, newBillingDate, newPhone, jobs);
+    }
+
+    private static Job createJobWithMatches(Job job, List<Person> matches) {
+        Name newName = job.getName();
+        JobCompany newCompany = job.getCompany();
+        JobSalary newSalary = job.getSalary();
+        JobDescription newDescription = job.getDescription();
+        Set<Tag> newRequirements = job.getRequirements();
+        return new Job(newName, newCompany, newSalary, newDescription, newRequirements, matches);
     }
 
     /**

@@ -46,10 +46,10 @@ class JsonSerializableAddressBook {
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
-//        persons.addAll(source
-//                .getPersonList().stream().filter(p -> p.getMatch() == null)
-//                .map(JsonAdaptedPerson::new)
-//                .collect(Collectors.toList()));
+        persons.addAll(source
+                .getPersonList().stream().filter(p -> p.getMatch() == null)
+                .map(JsonAdaptedPerson::new)
+                .collect(Collectors.toList()));
         companies.addAll(source
                 .getCompanyList()
                 .stream()
@@ -64,13 +64,13 @@ class JsonSerializableAddressBook {
      */
     public AddressBook toModelType() throws IllegalValueException {
         AddressBook addressBook = new AddressBook();
-//        for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
-//            Person person = jsonAdaptedPerson.toModelType();
-//            if (addressBook.hasPerson(person)) {
-//                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
-//            }
-//            addressBook.addPerson(person);
-//        }
+        for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
+            Person person = jsonAdaptedPerson.toModelType();
+            if (addressBook.hasPerson(person)) {
+                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
+            }
+            addressBook.addPerson(person);
+        }
 
 //        for (JsonAdaptedJob jsonAdaptedJob : jobs) {
 //            Job job = jsonAdaptedJob.toModelType();
