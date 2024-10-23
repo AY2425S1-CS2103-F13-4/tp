@@ -94,6 +94,13 @@ public class Job {
     }
 
     /**
+     * Returns true if this person has any job matches, returns false otherwise.
+     */
+    public boolean isMatchPresent() {
+        return matchedContactIdentifier.isPresent();
+    }
+
+    /**
      * Checks if the Job object has matched with a {@code Person}.
      * Utilised in assertations to ensure bidirectional associations.
      *
