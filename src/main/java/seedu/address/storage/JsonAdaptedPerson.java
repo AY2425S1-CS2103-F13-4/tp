@@ -47,7 +47,24 @@ class JsonAdaptedPerson {
         if (skills != null) {
             this.skills.addAll(skills);
         }
-        this.matchedJobIdentifier = null;
+        this.matchedJobIdentifier = matchedJobIdentifier;
+    }
+
+    /**
+     * Constructs a {@code JsonAdaptedPerson} with the given person details.
+     */
+    @JsonCreator
+    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
+                             @JsonProperty("email") String email, @JsonProperty("role") String role,
+                             @JsonProperty("skills") List<JsonAdaptedSkill> skills) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        if (skills != null) {
+            this.skills.addAll(skills);
+        }
+        this.matchedJobIdentifier = new ArrayList<>();
     }
 
     /**
@@ -108,7 +125,11 @@ class JsonAdaptedPerson {
         final Role modelRole = new Role(role);
 
         final Set<Skill> modelSkills = new HashSet<>(personSkills);
-        return new Person(modelName, modelPhone, modelEmail, modelRole, modelSkills);
+
+        // If matchedJobIdentifier is null, ofNullable will return the equivalent of Optional.empty().
+        final Optional<List<String>> modelMatchedJobIdentifier = Optional.ofNullable(matchedJobIdentifier);
+
+        return new Person(modelName, modelPhone, modelEmail, modelRole, modelSkills, modelMatchedJobIdentifier);
     }
 
 }

@@ -38,7 +38,8 @@ class JsonAdaptedJob {
     @JsonCreator
     public JsonAdaptedJob(@JsonProperty("name") String name, @JsonProperty("company") String company,
             @JsonProperty("salary") String salary, @JsonProperty("description") String description,
-            @JsonProperty("requirements") List<JsonAdaptedTag> requirements) {
+            @JsonProperty("requirements") List<JsonAdaptedTag> requirements,
+            @JsonProperty("matchedContactIdentifier") List<String> matchedContactIdentifier) {
         this.name = name;
         this.company = company;
         this.salary = salary;
@@ -46,7 +47,7 @@ class JsonAdaptedJob {
         if (requirements != null) {
             this.requirements.addAll(requirements);
         }
-        this.matchedContactIdentifier = null;
+        this.matchedContactIdentifier = matchedContactIdentifier;
     }
 
     /**
@@ -83,8 +84,10 @@ class JsonAdaptedJob {
 
         Set<Tag> modelJobRequirements = new HashSet<>(jobRequirements);
 
+        final Optional<List<String>> modelMatchedPersonIdentifier = Optional.ofNullable(matchedContactIdentifier);
+
         return new Job(modelName, modelJobCompany, modelJobSalary, modelJobDescription,
-                modelJobRequirements, Optional.empty());
+                modelJobRequirements, modelMatchedPersonIdentifier);
     }
 
 }
