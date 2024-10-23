@@ -80,16 +80,9 @@ public class Job {
     }
 
     /**
-     * Returns the identifier of the corresponding matched {@code Person}.
-     */
-    public Optional<List<String>> getMatchedIdentifier() {
-        return this.matchedContactIdentifier;
-    }
-
-    /**
      * Returns any existing associations for conversion to JSON for Jackson use and for display in the UI.
      */
-    public List<String> getMatch() {
+    public List<String> getMatchedIdentifier() {
         return matchedContactIdentifier.orElse(null);
     }
 
@@ -114,7 +107,7 @@ public class Job {
     /**
      * Returns a list of two strings, company name and job name, that identify the Job object.
      */
-    public List<String> getIdentifier() {
+    public List<String> getPersonalIdentifier() {
         return List.of(company.toString(), name.fullName);
     }
 

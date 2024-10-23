@@ -85,7 +85,7 @@ public class Person {
     /**
      * Returns any existing associations for conversion to JSON for Jackson use and for display in the UI.
      */
-    public List<String> getMatch() {
+    public List<String> getMatchedIdentifier() {
         return matchedJobIdentifier.orElse(null);
     }
 
@@ -108,7 +108,7 @@ public class Person {
     /**
      * Returns a string that identify the Person object.
      */
-    public List<String> getIdentifier() {
+    public List<String> getPersonalIdentifier() {
         return List.of(name.toString(), phone.toString());
     }
 
