@@ -4,6 +4,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -83,7 +84,7 @@ public class Person {
     }
 
     /**
-     * Returns true if this person has any job matches, returns false otherwise
+     * Returns true if this person has any job matches, returns false otherwise.
      */
     public boolean isMatchPresent() {
         return match.isPresent();
@@ -92,14 +93,14 @@ public class Person {
     /**
      * Checks if this person has matched with the specified job.
      *
-     * @param jobIdentifier A string that uniquely identify a job
+     * @param jobIdentifier A string that uniquely identify a job.
      */
     public boolean hasMatched(String jobIdentifier) {
         return match.map(s -> s.equals(jobIdentifier)).orElse(false);
     }
 
     /**
-     * Returns a string that identify the Person object
+     * Returns a string that identify the Person object.
      */
     public String getIdentifier() {
         // TODO: This identifier cannot guarantee uniqueness

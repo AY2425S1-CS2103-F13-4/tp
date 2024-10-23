@@ -68,7 +68,7 @@ public class MatchCommand extends Command {
         JobSalary salary = job.getSalary();
         JobDescription description = job.getDescription();
         Set<Tag> requirements = job.getRequirements();
-        Set<String> matches = job.getMatches();
+        List<String> matches = job.getMatches();
         matches.add(contactName);
         return new Job(name, company, salary, description, requirements, matches);
     }

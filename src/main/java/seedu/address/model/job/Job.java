@@ -65,23 +65,16 @@ public class Job {
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}.
      * if modification is attempted.
      */
     public Set<Tag> getRequirements() {
         return Collections.unmodifiableSet(requirements);
     }
 
-    /** Returns true if both jobs have the same name and company. */
-    public boolean isSameJob(Job otherJob) {
-        if (otherJob == this) {
-            return true;
-        }
 
-        return otherJob != null && otherJob.getName().equals(getName()) && otherJob.getCompany().equals(getCompany());
-    }
 
-    public Set<String> getMatches() {
+    public List<String> getMatches() {
         return matches;
     }
 
@@ -90,10 +83,21 @@ public class Job {
     }
 
     /**
-     * Returns a string that identify the Job object
+     * Returns a string that identify the Job object.
      */
     public String getIdentifier() {
         return company.toString() + "::" + name;
+    }
+
+    /**
+     * Returns true if both jobs have the same name and company.
+     */
+    public boolean isSameJob(Job otherJob) {
+        if (otherJob == this) {
+            return true;
+        }
+
+        return otherJob != null && otherJob.getName().equals(getName()) && otherJob.getCompany().equals(getCompany());
     }
 
     /**
@@ -111,8 +115,12 @@ public class Job {
         }
 
         Job otherJob = (Job) other;
-        return name.equals(otherJob.name) && company.equals(otherJob.company) && salary.equals(otherJob.salary)
-               && requirements.equals(otherJob.requirements) && description.equals(otherJob.description);
+        return name.equals(otherJob.name)
+                && company.equals(otherJob.company)
+                && salary.equals(otherJob.salary)
+                && requirements.equals(otherJob.requirements)
+                && description.equals(otherJob.description)
+                && matches.equals(otherJob.matches);
     }
 
     @Override
