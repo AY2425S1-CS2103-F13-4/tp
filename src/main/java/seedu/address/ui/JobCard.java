@@ -57,7 +57,7 @@ public class JobCard extends UiPart<Region> {
         if (matchedPersonIdentifiers != null) {
             String personName = matchedPersonIdentifiers.get(0);
             String personNumber = matchedPersonIdentifiers.get(1);
-            matchStatus.setText("Matched with " + personName + ", " + personNumber);
+            matchStatus.setText("Filled by " + personName + ", contact number is " + personNumber);
         } else {
             matchStatus.setText("Open to applications");
         }

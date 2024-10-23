@@ -63,7 +63,7 @@ public class PersonCard extends UiPart<Region> {
         if (matchedJobIdentifier != null) {
             String companyName = matchedJobIdentifier.get(0);
             String jobName = matchedJobIdentifier.get(1);
-            matchStatus.setText("Matched with " + companyName + " " + jobName);
+            matchStatus.setText("Employed @ " + companyName + " - " + jobName);
         } else {
             matchStatus.setText("Unemployed");
         }

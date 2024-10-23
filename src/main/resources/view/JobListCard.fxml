@@ -31,7 +31,7 @@
       <Label fx:id="company" styleClass="cell_small_label" text="\$phone" />
       <Label fx:id="salary" styleClass="cell_small_label" text="\$address" />
       <Label fx:id="description" styleClass="cell_small_label" text="\$email" />
-      <Label fx:id="matchStatus" styleClass="cell_big_label" text="\$matchedStatus" />
+      <Label fx:id="matchStatus" styleClass="cell_small_label" text="\$matchedStatus" />
     </VBox>
   </GridPane>
 </HBox>
