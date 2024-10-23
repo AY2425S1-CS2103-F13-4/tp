@@ -112,8 +112,25 @@ public class Person {
         return phone.toString();
     }
 
+    // Todo: I commented out this whole chunk, slated for deletion. This is because people can have the same name
+    //  and I believe that we agreed to distinguish people by the email or handphone number.
+    //  verify this in the PR review, especially since we will have to modify the JavaDocs of
+    //  modelmanager, addressbook, and uniquepersonList.
+//    /**
+//     * Returns true if both persons have the same name.
+//     * This defines a weaker notion of equality between two persons.
+//     */
+//    public boolean isSamePerson(Person otherPerson) {
+//        if (otherPerson == this) {
+//            return true;
+//        }
+//
+//        return otherPerson != null
+//                && otherPerson.getName().equals(getName());
+//    }
+
     /**
-     * Returns true if both persons have the same name.
+     * Returns true if both persons have the same number or email address.
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
@@ -122,7 +139,7 @@ public class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getName().equals(getName());
+                && (otherPerson.getEmail().equals(getEmail()) || otherPerson.getPhone().equals(getPhone()));
     }
 
     /**
