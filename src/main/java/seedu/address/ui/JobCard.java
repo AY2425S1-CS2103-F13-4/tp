@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import java.util.Comparator;
+import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -52,9 +53,11 @@ public class JobCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(requirement -> requirement.tagName))
                 .forEach(requirement -> requirements.getChildren().add(new Label(requirement.tagName)));
 
-        String matchedPersonName = job.getMatch();
-        if (matchedPersonName != null) {
-            matchStatus.setText("Matched with " + matchedPersonName);
+        List<String> matchedPersonIdentifiers = job.getMatch();
+        if (matchedPersonIdentifiers != null) {
+            String personName = matchedPersonIdentifiers.get(0);
+            String personNumber = matchedPersonIdentifiers.get(1);
+            matchStatus.setText("Matched with " + personName + ", " + personNumber);
         } else {
             matchStatus.setText("Open to applications");
         }

@@ -1,6 +1,5 @@
 package seedu.address.model.job;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -23,9 +22,10 @@ public class Job {
     private final JobDescription description;
     private final Set<Tag> requirements = new HashSet<>();
     // Todo: I named it more verbosely to be clearer since matches and match was confusing me.
-    // Todo: The main thing that I wanted to highlight was Person and Contact
-    // To identify a contact, we utilise phone number, this guarantees uniqueness
-    private final Optional<String> matchedContactIdentifier;
+    //  The main thing that I wanted to highlight was standardisation: keep Person or change to Contact.
+    //  Aside, to identify a contact, I chose to utilise phone number, this guarantees uniqueness.
+    //  Subsequent modification to utilise name + phone, this is for UI stuff to set text and standardise JSON.
+    private final Optional<List<String>> matchedContactIdentifier;
 
     /**
      * Creates a new job, utilised in the context of addJobCommand.
@@ -45,7 +45,7 @@ public class Job {
      * Creates a new job, utilised in the context of loading from {@code Storage}.
      */
     public Job(Name name, JobCompany company, JobSalary salary,
-            JobDescription description, Set<Tag> requirements, Optional<String> matches) {
+            JobDescription description, Set<Tag> requirements, Optional<List<String>> matches) {
         requireAllNonNull(name, company, salary, description, requirements, matches);
         this.name = name;
         this.company = company;
@@ -72,7 +72,7 @@ public class Job {
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}.
+     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
     public Set<Tag> getRequirements() {
@@ -82,14 +82,14 @@ public class Job {
     /**
      * Returns the identifier of the corresponding matched {@code Person}.
      */
-    public Optional<String> getMatchedIdentifier() {
+    public Optional<List<String>> getMatchedIdentifier() {
         return this.matchedContactIdentifier;
     }
 
     /**
      * Returns any existing associations for conversion to JSON for Jackson use and for display in the UI.
      */
-    public String getMatch() {
+    public List<String> getMatch() {
         return matchedContactIdentifier.orElse(null);
     }
 
@@ -97,15 +97,15 @@ public class Job {
      * Checks if the Job object has matched with a {@code Person}.
      * Utilised in assertations to ensure bidirectional associations.
      *
-     * @param contactName Name of the {@code Person} to be matched with.
+     * @param contactIdentifier List containing the name and number of the {@code Person} to be matched with.
      * @return True if this job has been matched and the identity of the matched {@code Person} is the same.
      */
-    public boolean hasMatched(String contactName) {
-        return matchedContactIdentifier.map(s -> s.equals(contactName)).orElse(false);
+    public boolean hasMatched(List<String> contactIdentifier) {
+        return matchedContactIdentifier.map(s -> s.equals(contactIdentifier)).orElse(false);
     }
 
     /**
-     * Returns a string that identify the Job object.
+     * Returns a list of two strings, company name and job name, that identify the Job object.
      */
     public List<String> getIdentifier() {
         return List.of(company.toString(), name.fullName);

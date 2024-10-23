@@ -108,8 +108,8 @@ public class Person {
     /**
      * Returns a string that identify the Person object.
      */
-    public String getIdentifier() {
-        return phone.toString();
+    public List<String> getIdentifier() {
+        return List.of(name.toString(), phone.toString());
     }
 
     // Todo: I commented out this whole chunk, slated for deletion. This is because people can have the same name
