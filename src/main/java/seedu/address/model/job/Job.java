@@ -1,12 +1,16 @@
 package seedu.address.model.job;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.common.Name;
 import seedu.address.model.tag.Tag;
+
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 /**
  * Represents a Job Listing in the address book.
@@ -17,19 +21,31 @@ public class Job {
     private final JobSalary salary;
     private final JobDescription description;
     private final Set<Tag> requirements = new HashSet<>();
+    private final List<String> matches;
 
     /**
-     * TODO: Implement data validation
-     * TODO: What is meant by this ah ^^?
-     * Every field has no validation for now.
+     *
      */
     public Job(Name name, JobCompany company, JobSalary salary,
-            JobDescription description, Set<Tag> requirements) {
+               JobDescription description, Set<Tag> requirements) {
+        requireAllNonNull(name, company, salary, description, requirements);
         this.name = name;
         this.company = company;
         this.salary = salary;
         this.description = description;
         this.requirements.addAll(requirements);
+        this.matches = new ArrayList<>();
+    }
+
+    public Job(Name name, JobCompany company, JobSalary salary,
+            JobDescription description, Set<Tag> requirements, List<String> matches) {
+        requireAllNonNull(name, company, salary, description, requirements, matches);
+        this.name = name;
+        this.company = company;
+        this.salary = salary;
+        this.description = description;
+        this.requirements.addAll(requirements);
+        this.matches = matches;
     }
 
     public Name getName() {

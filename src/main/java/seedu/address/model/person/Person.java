@@ -25,6 +25,7 @@ public class Person {
     // Data fields
     private final Role role;
     private final Set<Skill> skills = new HashSet<>();
+    private final String match;
 
     /**
      * Every field must be present and not null.
@@ -36,6 +37,20 @@ public class Person {
         this.email = email;
         this.role = role;
         this.skills.addAll(skills);
+        this.match = "";
+    }
+
+    /**
+     * Creates a person with the matching job
+     */
+    public Person(Name name, Phone phone, Email email, Role role, Set<Skill> skills, String match) {
+        requireAllNonNull(name, phone, email, role, skills, match);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        this.skills.addAll(skills);
+        this.match = match;
     }
 
     public Name getName() {
@@ -95,13 +110,14 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && role.equals(otherPerson.role)
-                && skills.equals(otherPerson.skills);
+                && skills.equals(otherPerson.skills)
+                && match.equals(otherPerson.match);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, role, skills);
+        return Objects.hash(name, phone, email, role, skills, match);
     }
 
     @Override
