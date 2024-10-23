@@ -27,10 +27,12 @@ public class Person {
     // Data fields
     private final Role role;
     private final Set<Skill> skills = new HashSet<>();
-    private final Optional<String> match;
+    // List<String> is to prevent a possible bug where companyName happens to be a jobName, so we enforce an order.
+    private final Optional<List<String>> matchedJobIdentifier;
 
     /**
      * Every parameter must be present and not null.
+     * Creates a new person, utilised in the context of addContactCommand.
      */
     public Person(Name name, Phone phone, Email email, Role role, Set<Skill> skills) {
         requireAllNonNull(name, phone, email, role, skills);
@@ -39,20 +41,21 @@ public class Person {
         this.email = email;
         this.role = role;
         this.skills.addAll(skills);
-        this.match = Optional.empty();
+        this.matchedJobIdentifier = Optional.empty();
     }
 
     /**
-     * Creates a person with the matching job
+     * Creates a new person, utilised in the context of loading from {@code Storage}.
      */
-    public Person(Name name, Phone phone, Email email, Role role, Set<Skill> skills, String match) {
-        requireAllNonNull(name, phone, email, role, skills, match);
+    public Person(Name name, Phone phone, Email email, Role role,
+                  Set<Skill> skills, Optional<List<String>> matchedJobIdentifier) {
+        requireAllNonNull(name, phone, email, role, skills, matchedJobIdentifier);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.role = role;
         this.skills.addAll(skills);
-        this.match = Optional.of(match);
+        this.matchedJobIdentifier = matchedJobIdentifier;
     }
 
     public Name getName() {
@@ -79,32 +82,34 @@ public class Person {
         return Collections.unmodifiableSet(skills);
     }
 
-    public String getMatch() {
-        return match.orElse(null);
+    /**
+     * Returns any existing associations for conversion to JSON for Jackson use.
+     */
+    public List<String> getMatch() {
+        return matchedJobIdentifier.orElse(null);
     }
 
     /**
      * Returns true if this person has any job matches, returns false otherwise.
      */
     public boolean isMatchPresent() {
-        return match.isPresent();
+        return matchedJobIdentifier.isPresent();
     }
 
     /**
      * Checks if this person has matched with the specified job.
      *
-     * @param jobIdentifier A string that uniquely identify a job.
+     * @param jobIdentifier A list containing two strings, company and job name, that uniquely identify a job.
      */
-    public boolean hasMatched(String jobIdentifier) {
-        return match.map(s -> s.equals(jobIdentifier)).orElse(false);
+    public boolean hasMatched(List<String> jobIdentifier) {
+        return matchedJobIdentifier.map(s -> s.equals(jobIdentifier)).orElse(false);
     }
 
     /**
      * Returns a string that identify the Person object.
      */
     public String getIdentifier() {
-        // TODO: This identifier cannot guarantee uniqueness
-        return name.fullName;
+        return phone.toString();
     }
 
     /**
@@ -141,13 +146,13 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && role.equals(otherPerson.role)
                 && skills.equals(otherPerson.skills)
-                && match.equals(otherPerson.match);
+                && matchedJobIdentifier.equals(otherPerson.matchedJobIdentifier);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, role, skills, match);
+        return Objects.hash(name, phone, email, role, skills, matchedJobIdentifier);
     }
 
     @Override
