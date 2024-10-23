@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
@@ -23,7 +24,7 @@ import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
 
 /**
- * Edits the details of an existing person in the address book.
+ * Matches an unmatched person and a job together.
  */
 public class MatchCommand extends Command {
 
@@ -35,7 +36,8 @@ public class MatchCommand extends Command {
             COMMAND_WORD + ": Match a contact to a job\nParameters: <CONTACT_INDEX> <JOB_INDEX>\nExample: "
                     + COMMAND_WORD + " 2 1";
     public static final String MESSAGE_MATCH_SUCCESS = "Matched Contact: %1$s with Job: %2$s";
-    public static final String MESSAGE_HAS_OTHER_MATCHES = "Contact already has another job!";
+    public static final String MESSAGE_CONTACT_HAS_OTHER_MATCHES = "Contact already has another job!";
+    public static final String MESSAGE_JOB_HAS_OTHER_MATCHES = "Job is already filled by someone else!";
     public static final String MESSAGE_ALREADY_MATCHED = "Contact already matched with this job!";
 
     private final Index contactIndex;
@@ -53,24 +55,22 @@ public class MatchCommand extends Command {
         this.jobIndex = jobIndex;
     }
 
-    private static Person matchContactToJob(Person contact, String jobName) {
+    private static Person matchContactToJob(Person contact, List<String> jobIdentifier) {
         Name name = contact.getName();
         Phone phone = contact.getPhone();
         Email email = contact.getEmail();
         Role role = contact.getRole();
         Set<Skill> skills = contact.getSkills();
-        return new Person(name, phone, email, role, skills, jobName);
+        return new Person(name, phone, email, role, skills, Optional.of(jobIdentifier));
     }
 
-    private static Job matchJobToContact(Job job, String contactName) {
+    private static Job matchJobToContact(Job job, List<String> contactIdentifier) {
         Name name = job.getName();
         JobCompany company = job.getCompany();
         JobSalary salary = job.getSalary();
         JobDescription description = job.getDescription();
         Set<Tag> requirements = job.getRequirements();
-        List<String> matches = job.getMatches();
-        matches.add(contactName);
-        return new Job(name, company, salary, description, requirements, matches);
+        return new Job(name, company, salary, description, requirements, Optional.of(contactIdentifier));
     }
 
     @Override
@@ -93,24 +93,27 @@ public class MatchCommand extends Command {
         assert contactToMatch != null;
         assert jobToMatch != null;
 
-        // TODO: Let's assume contact name is used preserve uniqueness for now
-        final String contactIdentifier = contactToMatch.getIdentifier();
-        final String jobIdentifier = jobToMatch.getIdentifier();
+        final List<String> contactIdentifier = contactToMatch.getIdentifier();
+        final List<String> jobIdentifier = jobToMatch.getIdentifier();
 
         boolean hasContactMatchedJob = contactToMatch.hasMatched(jobIdentifier);
         boolean hasJobMatchedContact = jobToMatch.hasMatched(contactIdentifier);
+
+        // The bi-direction association should always be maintained
+        // Assert when there is a unidirectional association
+        assert hasContactMatchedJob == hasJobMatchedContact;
 
         if (hasContactMatchedJob && hasJobMatchedContact) {
             throw new CommandException(MESSAGE_ALREADY_MATCHED);
         }
 
         if (contactToMatch.isMatchPresent()) {
-            throw new CommandException(MESSAGE_HAS_OTHER_MATCHES);
+            throw new CommandException(MESSAGE_CONTACT_HAS_OTHER_MATCHES);
         }
 
-        // The bi-direction association should always be maintained
-        // Assert when there is a unidirectional association
-        assert hasContactMatchedJob == hasJobMatchedContact;
+        if (jobToMatch.isMatchPresent()) {
+            throw new CommandException(MESSAGE_JOB_HAS_OTHER_MATCHES);
+        }
 
         Person matchedContact = matchContactToJob(contactToMatch, jobIdentifier);
         Job matchedJob = matchJobToContact(jobToMatch, contactIdentifier);
