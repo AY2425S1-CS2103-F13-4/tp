@@ -12,7 +12,7 @@ import seedu.address.model.job.Job;
 
 
 /**
- * An UI component that displays information of a {@code Job}.
+ * A UI component that displays information of a {@code Job}.
  */
 public class JobCard extends UiPart<Region> {
 
@@ -34,6 +34,8 @@ public class JobCard extends UiPart<Region> {
     private Label description;
     @FXML
     private FlowPane requirements;
+    @FXML
+    private Label matchStatus;
 
     /**
      * Creates a {@code JobCode} with the given {@code Job} and index to display.
@@ -49,5 +51,12 @@ public class JobCard extends UiPart<Region> {
         job.getRequirements().stream()
                 .sorted(Comparator.comparing(requirement -> requirement.tagName))
                 .forEach(requirement -> requirements.getChildren().add(new Label(requirement.tagName)));
+
+        String matchedPersonName = job.getMatch();
+        if (matchedPersonName != null) {
+            matchStatus.setText("Matched with " + matchedPersonName);
+        } else {
+            matchStatus.setText("Open to applications");
+        }
     }
 }
