@@ -3,6 +3,7 @@ package seedu.address.storage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ class JsonAdaptedJob {
     private final String salary;
     private final String description;
     private final List<JsonAdaptedTag> requirements = new ArrayList<>();
-    private final List<String> matches = new ArrayList<>();
+    private final List<String> matchedContactIdentifier;
 
     /**
      * Constructs a {@code JsonAdaptedJob} with the given job details.
@@ -45,6 +46,7 @@ class JsonAdaptedJob {
         if (requirements != null) {
             this.requirements.addAll(requirements);
         }
+        this.matchedContactIdentifier = null;
     }
 
     /**
@@ -58,7 +60,7 @@ class JsonAdaptedJob {
         requirements.addAll(source.getRequirements().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
-        matches.addAll(source.getMatches().stream().collect(Collectors.toList()));
+        matchedContactIdentifier = source.getMatchedIdentifier();
     }
 
     /**
@@ -81,8 +83,8 @@ class JsonAdaptedJob {
 
         Set<Tag> modelJobRequirements = new HashSet<>(jobRequirements);
 
-        return new Job(modelName, modelJobCompany, modelJobSalary, modelJobDescription, modelJobRequirements,
-                ERRORLEFT);
+        return new Job(modelName, modelJobCompany, modelJobSalary, modelJobDescription,
+                modelJobRequirements, Optional.empty());
     }
 
 }

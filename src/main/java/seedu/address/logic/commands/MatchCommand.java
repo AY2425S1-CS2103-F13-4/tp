@@ -93,8 +93,8 @@ public class MatchCommand extends Command {
         assert contactToMatch != null;
         assert jobToMatch != null;
 
-        final List<String> contactIdentifier = contactToMatch.getIdentifier();
-        final List<String> jobIdentifier = jobToMatch.getIdentifier();
+        final List<String> contactIdentifier = contactToMatch.getPersonalIdentifier();
+        final List<String> jobIdentifier = jobToMatch.getPersonalIdentifier();
 
         boolean hasContactMatchedJob = contactToMatch.hasMatched(jobIdentifier);
         boolean hasJobMatchedContact = jobToMatch.hasMatched(contactIdentifier);

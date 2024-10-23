@@ -2,6 +2,7 @@ package seedu.address.model.util;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -76,7 +77,7 @@ public class SampleDataUtil {
                         + "opportunities to switch teams and projects as you and our fast-paced business grow and "
                         + "evolve. "),
                 getRequirements("Go", "Kubernetes", "Docker", "5YOE"),
-                new HashSet<>()
+                Optional.empty()
         ), new Job(
                 new Name("Software Engineering Manager II, YouTube"),
                 new JobCompany("YouTube"),
@@ -85,14 +86,14 @@ public class SampleDataUtil {
                         "As a Software Engineering Manager you manage your project goals, contribute to product "
                         + "strategy and help develop your team. "),
                 getRequirements("Leadership", "AGILE", "SDLC", "CICD"),
-                new HashSet<>()
+                Optional.empty()
         ), new Job(
                 new Name("Test Job"),
                 new JobCompany("Test Company"),
                 new JobSalary("300"),
                 new JobDescription(null),
                 getRequirements("TestRequirements"),
-                new HashSet<>()
+                Optional.empty()
         )};
     }
 
