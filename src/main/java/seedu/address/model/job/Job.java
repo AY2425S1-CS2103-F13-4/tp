@@ -87,6 +87,13 @@ public class Job {
     }
 
     /**
+     * Returns any existing associations for conversion to JSON for Jackson use and for display in the UI.
+     */
+    public String getMatch() {
+        return matchedContactIdentifier.orElse(null);
+    }
+
+    /**
      * Checks if the Job object has matched with a {@code Person}.
      * Utilised in assertations to ensure bidirectional associations.
      *

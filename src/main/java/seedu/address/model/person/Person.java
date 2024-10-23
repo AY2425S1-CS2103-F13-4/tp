@@ -83,7 +83,7 @@ public class Person {
     }
 
     /**
-     * Returns any existing associations for conversion to JSON for Jackson use.
+     * Returns any existing associations for conversion to JSON for Jackson use and for display in the UI.
      */
     public List<String> getMatch() {
         return matchedJobIdentifier.orElse(null);
