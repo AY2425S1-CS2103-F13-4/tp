@@ -45,6 +45,7 @@ class JsonAdaptedPerson {
         if (skills != null) {
             this.skills.addAll(skills);
         }
+        this.match = null;
     }
 
     /**
@@ -58,6 +59,7 @@ class JsonAdaptedPerson {
         skills.addAll(source.getSkills().stream()
                 .map(JsonAdaptedSkill::new)
                 .collect(Collectors.toList()));
+        match = source.getMatch();
     }
 
     /**

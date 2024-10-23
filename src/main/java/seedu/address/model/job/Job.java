@@ -81,6 +81,21 @@ public class Job {
         return otherJob != null && otherJob.getName().equals(getName()) && otherJob.getCompany().equals(getCompany());
     }
 
+    public Set<String> getMatches() {
+        return matches;
+    }
+
+    public boolean hasMatched(String contactName) {
+        return this.matches.contains(contactName);
+    }
+
+    /**
+     * Returns a string that identify the Job object
+     */
+    public String getIdentifier() {
+        return company.toString() + "::" + name;
+    }
+
     /**
      * Returns true if both jobs have the same identity and data fields.
      */

@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -25,10 +26,10 @@ public class Person {
     // Data fields
     private final Role role;
     private final Set<Skill> skills = new HashSet<>();
-    private final String match;
+    private final Optional<String> match;
 
     /**
-     * Every field must be present and not null.
+     * Every parameter must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Role role, Set<Skill> skills) {
         requireAllNonNull(name, phone, email, role, skills);
@@ -37,7 +38,7 @@ public class Person {
         this.email = email;
         this.role = role;
         this.skills.addAll(skills);
-        this.match = "";
+        this.match = Optional.empty();
     }
 
     /**
@@ -50,7 +51,7 @@ public class Person {
         this.email = email;
         this.role = role;
         this.skills.addAll(skills);
-        this.match = match;
+        this.match = Optional.of(match);
     }
 
     public Name getName() {
@@ -75,6 +76,34 @@ public class Person {
      */
     public Set<Skill> getSkills() {
         return Collections.unmodifiableSet(skills);
+    }
+
+    public String getMatch() {
+        return match.orElse(null);
+    }
+
+    /**
+     * Returns true if this person has any job matches, returns false otherwise
+     */
+    public boolean isMatchPresent() {
+        return match.isPresent();
+    }
+
+    /**
+     * Checks if this person has matched with the specified job.
+     *
+     * @param jobIdentifier A string that uniquely identify a job
+     */
+    public boolean hasMatched(String jobIdentifier) {
+        return match.map(s -> s.equals(jobIdentifier)).orElse(false);
+    }
+
+    /**
+     * Returns a string that identify the Person object
+     */
+    public String getIdentifier() {
+        // TODO: This identifier cannot guarantee uniqueness
+        return name.fullName;
     }
 
     /**
