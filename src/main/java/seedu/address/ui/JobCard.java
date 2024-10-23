@@ -53,7 +53,7 @@ public class JobCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(requirement -> requirement.tagName))
                 .forEach(requirement -> requirements.getChildren().add(new Label(requirement.tagName)));
 
-        List<String> matchedPersonIdentifiers = job.getMatch();
+        List<String> matchedPersonIdentifiers = job.getMatchedIdentifier();
         if (matchedPersonIdentifiers != null) {
             String personName = matchedPersonIdentifiers.get(0);
             String personNumber = matchedPersonIdentifiers.get(1);

@@ -59,7 +59,7 @@ public class PersonCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(skill -> skill.skillName))
                 .forEach(skill -> skills.getChildren().add(new Label(skill.skillName)));
 
-        List<String> matchedJobIdentifier = person.getMatch();
+        List<String> matchedJobIdentifier = person.getMatchedIdentifier();
         if (matchedJobIdentifier != null) {
             String companyName = matchedJobIdentifier.get(0);
             String jobName = matchedJobIdentifier.get(1);
