@@ -2,9 +2,6 @@ package seedu.address.model.job;
 
 import seedu.address.model.common.Name;
 
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.AppUtil.checkArgument;
-
 /**
  * Represents a Job's company in the address book.
  */

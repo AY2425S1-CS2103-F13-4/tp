@@ -1,9 +1,9 @@
 package seedu.address.storage;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,23 +48,6 @@ class JsonAdaptedPerson {
             this.skills.addAll(skills);
         }
         this.matchedJobIdentifier = matchedJobIdentifier;
-    }
-
-    /**
-     * Constructs a {@code JsonAdaptedPerson} with the given person details.
-     */
-    @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-                             @JsonProperty("email") String email, @JsonProperty("role") String role,
-                             @JsonProperty("skills") List<JsonAdaptedSkill> skills) {
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.role = role;
-        if (skills != null) {
-            this.skills.addAll(skills);
-        }
-        this.matchedJobIdentifier = new ArrayList<>();
     }
 
     /**

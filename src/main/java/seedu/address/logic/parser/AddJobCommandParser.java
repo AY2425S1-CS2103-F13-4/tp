@@ -7,8 +7,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REQUIREMENTS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SALARY;
 
-import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -20,8 +18,6 @@ import seedu.address.model.job.JobCompany;
 import seedu.address.model.job.JobDescription;
 import seedu.address.model.job.JobSalary;
 import seedu.address.model.tag.Tag;
-
-import javax.swing.text.html.Option;
 
 /**
  * Parses input arguments and creates a new AddJobCommand object

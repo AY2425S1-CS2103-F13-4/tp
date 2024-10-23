@@ -116,18 +116,18 @@ public class Person {
     //  and I believe that we agreed to distinguish people by the email or handphone number.
     //  verify this in the PR review, especially since we will have to modify the JavaDocs of
     //  modelmanager, addressbook, and uniquepersonList.
-//    /**
-//     * Returns true if both persons have the same name.
-//     * This defines a weaker notion of equality between two persons.
-//     */
-//    public boolean isSamePerson(Person otherPerson) {
-//        if (otherPerson == this) {
-//            return true;
-//        }
-//
-//        return otherPerson != null
-//                && otherPerson.getName().equals(getName());
-//    }
+    //    /**
+    //     * Returns true if both persons have the same name.
+    //     * This defines a weaker notion of equality between two persons.
+    //     */
+    //    public boolean isSamePerson(Person otherPerson) {
+    //        if (otherPerson == this) {
+    //            return true;
+    //        }
+    //
+    //        return otherPerson != null
+    //                && otherPerson.getName().equals(getName());
+    //    }
 
     /**
      * Returns true if both persons have the same number or email address.

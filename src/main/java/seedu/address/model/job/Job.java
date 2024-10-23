@@ -1,5 +1,7 @@
 package seedu.address.model.job;
 
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -10,7 +12,6 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.common.Name;
 import seedu.address.model.tag.Tag;
 
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 /**
  * Represents a Job Listing in the address book.
