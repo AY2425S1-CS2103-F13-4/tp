@@ -61,7 +61,7 @@ public class AddJobCommandParser implements Parser<AddJobCommand> {
 
         // TODO: Load associations in job
         // ^^ Not sure if this is the correct class to do so
-        Job job = new Job(name, company, salary, description, requirements, Optional.empty());
+        Job job = new Job(name, company, salary, description, requirements);
 
         return new AddJobCommand(job);
     }
