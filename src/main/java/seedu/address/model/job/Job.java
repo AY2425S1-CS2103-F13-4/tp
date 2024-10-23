@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -21,10 +22,13 @@ public class Job {
     private final JobSalary salary;
     private final JobDescription description;
     private final Set<Tag> requirements = new HashSet<>();
-    private final List<String> matches;
+    // Todo: I named it more verbosely to be clearer since matches and match was confusing me.
+    // Todo: The main thing that I wanted to highlight was Person and Contact
+    // To identify a contact, we utilise phone number, this guarantees uniqueness
+    private final Optional<String> matchedContactIdentifier;
 
     /**
-     *
+     * Creates a new job, utilised in the context of addJobCommand.
      */
     public Job(Name name, JobCompany company, JobSalary salary,
                JobDescription description, Set<Tag> requirements) {
@@ -34,18 +38,21 @@ public class Job {
         this.salary = salary;
         this.description = description;
         this.requirements.addAll(requirements);
-        this.matches = new ArrayList<>();
+        this.matchedContactIdentifier = Optional.empty();
     }
 
+    /**
+     * Creates a new job, utilised in the context of loading from {@code Storage}.
+     */
     public Job(Name name, JobCompany company, JobSalary salary,
-            JobDescription description, Set<Tag> requirements, List<String> matches) {
+            JobDescription description, Set<Tag> requirements, Optional<String> matches) {
         requireAllNonNull(name, company, salary, description, requirements, matches);
         this.name = name;
         this.company = company;
         this.salary = salary;
         this.description = description;
         this.requirements.addAll(requirements);
-        this.matches = matches;
+        this.matchedContactIdentifier = matches;
     }
 
     public Name getName() {
@@ -72,21 +79,29 @@ public class Job {
         return Collections.unmodifiableSet(requirements);
     }
 
-
-
-    public List<String> getMatches() {
-        return matches;
+    /**
+     * Returns the identifier of the corresponding matched {@code Person}.
+     */
+    public Optional<String> getMatchedIdentifier() {
+        return this.matchedContactIdentifier;
     }
 
+    /**
+     * Checks if the Job object has matched with a {@code Person}.
+     * Utilised in assertations to ensure bidirectional associations.
+     *
+     * @param contactName Name of the {@code Person} to be matched with.
+     * @return True if this job has been matched and the identity of the matched {@code Person} is the same.
+     */
     public boolean hasMatched(String contactName) {
-        return this.matches.contains(contactName);
+        return matchedContactIdentifier.map(s -> s.equals(contactName)).orElse(false);
     }
 
     /**
      * Returns a string that identify the Job object.
      */
-    public String getIdentifier() {
-        return company.toString() + "::" + name;
+    public List<String> getIdentifier() {
+        return List.of(company.toString(), name.fullName);
     }
 
     /**
@@ -120,7 +135,7 @@ public class Job {
                 && salary.equals(otherJob.salary)
                 && requirements.equals(otherJob.requirements)
                 && description.equals(otherJob.description)
-                && matches.equals(otherJob.matches);
+                && matchedContactIdentifier.equals(otherJob.matchedContactIdentifier);
     }
 
     @Override
