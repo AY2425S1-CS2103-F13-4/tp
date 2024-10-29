@@ -26,7 +26,7 @@ public class UnmatchCommand extends Command {
     public static final int JOB_INDEX_POS = 1;
     public static final String COMMAND_WORD = "unmatch";
     public static final String MESSAGE_USAGE =
-            COMMAND_WORD + ": Unmatch a contact to a job\nParameters: <CONTACT_INDEX> <JOB_INDEX>\nExample: "
+            COMMAND_WORD + ": Unmatch a contact from a job\nParameters: <CONTACT_INDEX> <JOB_INDEX>\nExample: "
                     + COMMAND_WORD + " 2 1";
 
     public static final String MESSAGE_UNMATCH_SUCCESS = "Unmatched Contact: %1$s with Job: %2$s";
