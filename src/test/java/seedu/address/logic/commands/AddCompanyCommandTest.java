@@ -227,6 +227,21 @@ public class AddCompanyCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
+        @Override
+        public void resetHighlightedCompany() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setHighlightedCompany(Company company) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Company getHighlightedCompany() {
+            throw new AssertionError("This method should not be called.");
+        }
+
     }
 
     /**

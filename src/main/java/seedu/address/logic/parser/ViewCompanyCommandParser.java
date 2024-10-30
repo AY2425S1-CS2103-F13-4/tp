@@ -29,7 +29,6 @@ public class ViewCompanyCommandParser implements Parser<ViewCompanyCommand> {
             throw new ParseException(MESSAGE_MISSING_INDEX);
         }
 
-        // TODO: Implement an entity for view command
         if (!splitArgs[0].equals("company")) {
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }

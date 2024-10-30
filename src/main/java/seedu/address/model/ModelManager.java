@@ -28,6 +28,8 @@ public class ModelManager implements Model {
     private final FilteredList<Job> filteredJobs;
     private final FilteredList<Company> filteredCompanies;
 
+    private Company highlightedCompany;
+
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
@@ -281,9 +283,22 @@ public class ModelManager implements Model {
      */
     @Override
     public void showLinkedJobsAndPersonsByCompany(Company targetCompany) {
+        setHighlightedCompany(targetCompany);
         updateFilteredJobList(getJobLinkedToCompanyPredicate(targetCompany));
         updateFilteredPersonList(getPersonLinkedToCompanyPredicate(targetCompany));
-        updateFilteredCompanyList(company -> company.equals(targetCompany));
+        updateFilteredCompanyList(company -> true);
+    }
+
+    public void setHighlightedCompany(Company targetCompany) {
+        this.highlightedCompany = targetCompany;
+    }
+
+    public Company getHighlightedCompany() {
+        return highlightedCompany;
+    }
+
+    public void resetHighlightedCompany() {
+        this.highlightedCompany = null;
     }
 
 }

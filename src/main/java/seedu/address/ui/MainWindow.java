@@ -16,6 +16,7 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.Model;
 import seedu.address.model.company.exceptions.CompanyNotFoundException;
 /**
  * The Main Window. Provides the basic application layout containing
@@ -36,6 +37,7 @@ public class MainWindow extends UiPart<Stage> {
     private CompanyListPanel companyListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private Model modelManager;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -67,6 +69,7 @@ public class MainWindow extends UiPart<Stage> {
         // Set dependencies
         this.primaryStage = primaryStage;
         this.logic = logic;
+        this.modelManager = logic.getModel();
 
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
@@ -121,7 +124,7 @@ public class MainWindow extends UiPart<Stage> {
     void fillInnerParts() {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         jobListPanel = new JobListPanel(logic.getFilteredJobList());
-        companyListPanel = new CompanyListPanel(logic.getFilteredCompanyList());
+        companyListPanel = new CompanyListPanel(logic.getFilteredCompanyList(), modelManager);
 
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
         jobListPanelPlaceholder.getChildren().add(jobListPanel.getRoot());
@@ -191,6 +194,11 @@ public class MainWindow extends UiPart<Stage> {
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
+
+            if (!commandText.startsWith("view")) {
+                modelManager.resetHighlightedCompany();
+            }
+
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
@@ -202,6 +210,8 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.isExit()) {
                 handleExit();
             }
+
+            companyListPanel.refresh();
 
             return commandResult;
         } catch (CommandException | ParseException | CompanyNotFoundException e) {

@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -161,4 +162,24 @@ public interface Model {
      * that are linked to the specified company.
      */
     void showLinkedJobsAndPersonsByCompany(Company company);
+
+    /**
+     * Returns the currently highlighted company.
+     *
+     * @return the highlighted {@code Company} if it is set, otherwise {@code null}.
+     */
+    Company getHighlightedCompany();
+
+    /**
+     * Sets the specified company as the highlighted company.
+     *
+     * @param company the {@code Company} to set as highlighted.
+     */
+    void setHighlightedCompany(Company company);
+
+    /**
+     * Resets the highlighted company, clearing any active highlight in the UI.
+     * After calling this method, no company will be highlighted.
+     */
+    void resetHighlightedCompany();
 }

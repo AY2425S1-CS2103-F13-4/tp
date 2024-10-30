@@ -8,6 +8,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.Model;
 import seedu.address.model.company.Company;
 
 /**
@@ -16,6 +17,7 @@ import seedu.address.model.company.Company;
 public class CompanyListPanel extends UiPart<Region> {
     private static final String FXML = "CompanyListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(CompanyListPanel.class);
+    private final Model model;
 
     @FXML
     private ListView<Company> companyListView;
@@ -23,10 +25,15 @@ public class CompanyListPanel extends UiPart<Region> {
     /**
      * Creates a {@code CompanyListPanel} with the given {@code ObservableList}.
      */
-    public CompanyListPanel(ObservableList<Company> companyList) {
+    public CompanyListPanel(ObservableList<Company> companyList, Model model) {
         super(FXML);
+        this.model = model;
         companyListView.setItems(companyList);
         companyListView.setCellFactory(listView -> new CompanyListViewCell());
+    }
+
+    public void refresh() {
+        companyListView.refresh();
     }
 
     /**
@@ -42,6 +49,11 @@ public class CompanyListPanel extends UiPart<Region> {
                 setText(null);
             } else {
                 setGraphic(new CompanyCard(company, getIndex() + 1).getRoot());
+                if (company.equals(model.getHighlightedCompany())) {
+                    setStyle("-fx-background-color: #A9A9A9;"); //hex code for dark grey
+                } else {
+                    setStyle("");
+                }
             }
         }
     }
