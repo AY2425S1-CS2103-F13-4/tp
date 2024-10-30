@@ -3,8 +3,10 @@ package seedu.address.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalCompanies.GOOGLE;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 
@@ -91,6 +93,40 @@ public class ModelManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredPersonList().remove(0));
+    }
+
+    @Test
+    public void hasCompany_nullCompany_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.hasCompany(null));
+    }
+
+    @Test
+    public void hasCompany_companyNotInAddressBook_returnsFalse() {
+        assertFalse(modelManager.hasCompany(GOOGLE));
+    }
+
+    @Test
+    public void hasCompany_companyInAddressBook_returnsTrue() {
+        modelManager.addCompany(GOOGLE);
+        assertTrue(modelManager.hasCompany(GOOGLE));
+    }
+
+    @Test
+    public void getFilteredCompanyList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredCompanyList().remove(0));
+    }
+
+    @Test
+    public void setHighlightedCompany_setsHighlightedCompany() {
+        modelManager.setHighlightedCompany(GOOGLE);
+        assertEquals(GOOGLE, modelManager.getHighlightedCompany());
+    }
+
+    @Test
+    public void resetHighlightedCompany_resetsHighlightedCompany() {
+        modelManager.setHighlightedCompany(GOOGLE);
+        modelManager.resetHighlightedCompany();
+        assertNull(modelManager.getHighlightedCompany());
     }
 
     @Test
