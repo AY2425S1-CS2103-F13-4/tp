@@ -23,10 +23,10 @@ public class ViewCompanyCommand extends Command {
 
     public static final String ENTITY_WORD = "company";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " " + ENTITY_WORD
             + ": Displays all jobs and persons linked to the company identified by the index number "
             + "used in the displayed company list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Parameters: <INDEX> (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " " + ENTITY_WORD + " 1";
 
 
