@@ -23,15 +23,13 @@ public class ViewCompanyCommandParser implements Parser<ViewCompanyCommand> {
 
         String[] splitArgs = args.trim().split("\\s+");
 
-        if (args.isEmpty()) {
+        if (args.isEmpty() || !splitArgs[0].equals("company")) {
             throw new ParseException(ViewCompanyCommand.MESSAGE_USAGE);
-        } else if (splitArgs.length < 2) {
-            throw new ParseException(MESSAGE_MISSING_INDEX);
+
         }
 
-        // TODO: Implement an entity for view command
-        if (!splitArgs[0].equals("company")) {
-            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+        if (splitArgs.length == 1) {
+            throw new ParseException(MESSAGE_MISSING_INDEX);
         }
 
         String indexString = splitArgs[1];
