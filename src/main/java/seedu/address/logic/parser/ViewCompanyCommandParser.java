@@ -2,7 +2,6 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX_RANGE;
 import static seedu.address.logic.Messages.MESSAGE_MISSING_INDEX;
-import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ViewCompanyCommand;
