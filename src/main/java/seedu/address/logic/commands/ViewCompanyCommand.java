@@ -50,7 +50,7 @@ public class ViewCompanyCommand extends Command {
         requireNonNull(model);
         List<Company> lastShownList = model.getFilteredCompanyList();
 
-        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+        if (targetIndex.getZeroBased() >= lastShownList.size() || targetIndex.getZeroBased() < 0) {
             throw new CommandException(Messages.MESSAGE_INVALID_DISPLAYED_INDEX);
         }
 
