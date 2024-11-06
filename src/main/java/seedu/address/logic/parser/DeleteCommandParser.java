@@ -1,7 +1,8 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.DELETE_COMMAND_USAGE;
+
 import seedu.address.commons.core.index.Index;
-import seedu.address.logic.Messages;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.DeleteCompanyCommand;
 import seedu.address.logic.commands.DeleteContactCommand;
@@ -26,7 +27,6 @@ public class DeleteCommandParser implements Parser<DeleteCommand<?>> {
         String entityType = splitArgs[0]; // either "contact, "job" or "company"
         String indexString = splitArgs[1];
 
-        ParserUtil.requireValidEntity(entityType);
         Index index = ParserUtil.parseIndex(indexString);
 
         switch (entityType) {
@@ -37,9 +37,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand<?>> {
         case DeleteCompanyCommand.ENTITY_WORD:
             return new DeleteCompanyCommand(index);
         default:
-            String exceptionMessage = String.format(Messages.MESSAGE_OPERATION_NOT_ALLOWED,
-                    DeleteCommand.COMMAND_WORD, entityType);
-            throw new ParseException(exceptionMessage);
+            throw new ParseException(DELETE_COMMAND_USAGE);
         }
     }
 }
