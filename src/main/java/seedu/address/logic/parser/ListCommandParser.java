@@ -33,11 +33,11 @@ public class ListCommandParser implements Parser<ListCommand> {
     public ListCommand parse(String args) throws ParseException {
 
         String[] splitArgs = ParserUtil.parseRequiredNumberOfArguments(args, 1, ListCommand.MESSAGE_USAGE);
-        String entityString = splitArgs[0];
+        String entityType = splitArgs[0];
 
-        String entity = ParserUtil.parseEntity(entityString);
+        ParserUtil.requireValidEntity(entityType);
 
-        switch (entity) {
+        switch (entityType) {
         case ListContactCommand.ENTITY_WORD:
             return new ListContactCommand();
         case ListJobCommand.ENTITY_WORD:
@@ -48,7 +48,7 @@ public class ListCommandParser implements Parser<ListCommand> {
             return new ListAllCommand();
         default:
             String exceptionMessage = String.format(Messages.MESSAGE_OPERATION_NOT_ALLOWED,
-                    AddCommand.COMMAND_WORD, entity);
+                    AddCommand.COMMAND_WORD, entityType);
             throw new ParseException(exceptionMessage);
         }
     }

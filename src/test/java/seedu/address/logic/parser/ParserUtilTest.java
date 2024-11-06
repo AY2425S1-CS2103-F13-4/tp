@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX;
@@ -257,27 +258,21 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseEntity_validEntity_noExceptionsThrown() throws Exception {
-        assertEquals("contact", ParserUtil.parseEntity("contact"));
-        assertEquals("job", ParserUtil.parseEntity("job"));
-        assertEquals("company", ParserUtil.parseEntity("company"));
-        assertEquals("all", ParserUtil.parseEntity("all"));
-
-        // Different case
-        assertEquals("contact", ParserUtil.parseEntity("CoNtAcT"));
-        assertEquals("job", ParserUtil.parseEntity("jOb"));
-        assertEquals("company", ParserUtil.parseEntity("COMPany"));
-        assertEquals("all", ParserUtil.parseEntity("aLL"));
+    public void requireValidEntity_validEntity_noExceptionsThrown() throws Exception {
+        assertDoesNotThrow(() ->ParserUtil.requireValidEntity("contact"));
+        assertDoesNotThrow(() ->ParserUtil.requireValidEntity("job"));
+        assertDoesNotThrow(() ->ParserUtil.requireValidEntity("company"));
+        assertDoesNotThrow(() ->ParserUtil.requireValidEntity("all"));
     }
 
     @Test
-    public void parseEntity_invalidEntity_throwParseException() throws Exception {
+    public void requireValidEntity_invalidEntity_throwParseException() throws Exception {
         assertThrows(ParseException.class, ()
-                ->ParserUtil.parseEntity("someInvalidEntity"));
+                ->ParserUtil.requireValidEntity("someInvalidEntity"));
     }
 
     @Test
-    public void parseEntity_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseEntity(null));
+    public void requireValidEntity_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.requireValidEntity(null));
     }
 }
