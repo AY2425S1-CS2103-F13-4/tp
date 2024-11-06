@@ -58,8 +58,10 @@ public class ViewCompanyCommand extends Command {
 
         model.showLinkedJobsAndPersonsByCompany(companyToView);
 
-        return new CommandResult(String.format("Showing jobs and persons linked to %s",
-                companyToView.getName()));
+        return new CommandResult(String.format("Showing jobs and persons linked to: %s%n"
+                + "Address: %s; Phone: %s.%nBilling date on %s",
+                companyToView.getName(), companyToView.getAddress(), companyToView.getPhone(),
+                companyToView.getBillingDate()));
     }
 
 }
