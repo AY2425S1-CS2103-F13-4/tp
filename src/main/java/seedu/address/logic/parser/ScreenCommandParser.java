@@ -20,18 +20,18 @@ public class ScreenCommandParser implements Parser<ScreenCommand> {
 
         String[] splitArgs = ParserUtil.parseRequiredNumberOfArguments(args, 2, ScreenCommand.MESSAGE_USAGE);
 
-        String entityString = splitArgs[0];
+        String entityType = splitArgs[0];
         String indexString = splitArgs[1];
 
-        String entity = ParserUtil.parseEntity(entityString);
+        ParserUtil.requireValidEntity(entityType);
         Index index = ParserUtil.parseIndex(indexString);
 
-        switch (entity) {
+        switch (entityType) {
         case ScreenJobCommand.ENTITY_WORD:
             return new ScreenJobCommand(index);
         default:
             String exceptionMessage = String.format(Messages.MESSAGE_OPERATION_NOT_ALLOWED,
-                    AddCommand.COMMAND_WORD, entity);
+                    AddCommand.COMMAND_WORD, entityType);
             throw new ParseException(exceptionMessage);
         }
     }

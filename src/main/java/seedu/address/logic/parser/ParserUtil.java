@@ -38,21 +38,19 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a String input {@code entity} into a normalized String entity.
      * Throws ParseException if {@code entity} provided is not a valid entity in the address book.
      * Leading and trailing whitespaces will be trimmed.
      */
-    public static String parseEntity(String entity) throws ParseException {
+    public static void requireValidEntity(String entity) throws ParseException {
         requireNonNull(entity);
         String trimmedEntity = entity.trim();
-        String normalizedEntity = trimmedEntity.toLowerCase();
 
         // TODO: Not sure if this is magic string?
-        switch (normalizedEntity) {
+        switch (trimmedEntity) {
         case "contact", "company", "job", "all":
-            return normalizedEntity;
+            break;
         default:
-            String exceptionMessage = String.format(Messages.MESSAGE_INVALID_ENTITY, normalizedEntity);
+            String exceptionMessage = String.format(Messages.MESSAGE_INVALID_ENTITY, trimmedEntity);
             throw new ParseException(exceptionMessage);
         }
     }
