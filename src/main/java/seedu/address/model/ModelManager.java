@@ -283,7 +283,6 @@ public class ModelManager implements Model {
     public void showLinkedJobsAndPersonsByCompany(Company targetCompany) {
         updateFilteredJobList(getJobLinkedToCompanyPredicate(targetCompany));
         updateFilteredPersonList(getPersonLinkedToCompanyPredicate(targetCompany));
-        updateFilteredCompanyList(company -> company.equals(targetCompany));
     }
 
     /**
