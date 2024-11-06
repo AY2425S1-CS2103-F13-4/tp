@@ -23,7 +23,7 @@ public class ViewCompanyCommand extends Command {
 
     public static final String ENTITY_WORD = "company";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " " + ENTITY_WORD
             + ": Displays all jobs and persons linked to the company identified by the index number "
             + "used in the displayed company list.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
@@ -58,8 +58,11 @@ public class ViewCompanyCommand extends Command {
 
         model.showLinkedJobsAndPersonsByCompany(companyToView);
 
-        return new CommandResult(String.format("Showing jobs and persons linked to %s",
-                companyToView.getName()));
+        return new CommandResult(String.format("Showing jobs and persons linked to: %s; "
+                + "Address: %s; Phone: %s; Billing date on %s%n"
+                + "To see all lists again, use 'list all'.",
+                companyToView.getName(), companyToView.getAddress(), companyToView.getPhone(),
+                companyToView.getBillingDate()));
     }
 
 }
