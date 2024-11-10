@@ -53,6 +53,9 @@ The bulk of the app's work is done by the following four components:
 
 The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete contact 1`.
 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** In the diagram below, we see that `delete contact 1` command invokes the function `deletePerson(p)`. In fact, `Person` is our class implementation for contacts. For the rest of this document, please note that "person" and "contact" are used interchangeably to refer to the same thing.
+</div>
+
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
 Each of the four main components (also shown in the diagram above),
